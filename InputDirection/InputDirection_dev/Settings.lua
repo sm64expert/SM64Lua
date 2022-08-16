@@ -1,6 +1,7 @@
 Settings = {
 	goalAngle = 0,
 	goalMag = 127,
+	setRNG = false,
 	ShowEffectiveAngles = false
 }
 
@@ -52,7 +53,14 @@ Settings.Hotkeys = {
 	["reset magnitude"] = {},
 	["high magnitude"] = {},
 
-	["swim"] = {}
+	["swim"] = {},
+
+	["set rng"] = {},
+	["use value"] = {},
+	["use index"] = {},
+	["set rng input"] = {},
+
+	["record ghost"] = {}
 }
 
 
@@ -60,6 +68,7 @@ Settings.Hotkeys = {
 Settings.Themes = {
 	Light = {
 		Text = "#000000",
+		ReadWriteText = "#FF0000", -- should be the same as or a bit brighter than Button.Pressed.Top
 		Background = "#CCCCFF",
 		Button = {
 			--Text = "#000000", -- optional, defaults to Theme.Text
@@ -93,6 +102,7 @@ Settings.Themes = {
 	},
 	Dark = { -- Theme by ShadoXFM
 		Text = "#FFFFFF",
+		ReadWriteText = "#FF0000",
 		Background = "#222222",
 		Button = {
 			Text = "#000000",
@@ -124,6 +134,7 @@ Settings.Themes = {
 	},
 	IcyBlue = { -- Theme by Manama
 		Text = "#000000",
+		ReadWriteText = "#FFFFFF",
 		Background = "#757a9c",
 		Button = {
 			InvertedText = "#FFFFFF",
@@ -147,6 +158,70 @@ Settings.Themes = {
 			Editing = "#BDC5FF",
 			Enabled = "#FFFFFF",
 			Disabled = "#FFFFFF",
+			OutsideOutline = "#000000",
+			Outline = "#888888"
+		}
+	},
+	CustomDark = { -- Theme by tjk
+		Text = "#FFFFFF",
+		ReadWriteText = "#05DDE2",
+		Background = "#222222",
+		Button = {
+			Text = "#000000",
+			InvertedText = "#FFFFFF",
+			Outline = "#888888",
+			Top = "#F2F2F2",
+			Bottom = "#EDEDED",
+			Pressed = {
+				Top = "#05DDE2",
+				Bottom = "#00D4D8"
+			}
+		},
+		Joystick = {
+			Circle = "#444444",
+			Background = "#222222",
+			MagBoundary = "#666666",
+			Crosshair = "#FFFFFF",
+			Stick = "#dedcdc",
+			Dot = "#05DDE2",
+		},
+		InputField = {
+			EditingText = "#000000",
+			Editing = "#FFDD00",
+			Enabled = "#666666",
+			Disabled = "#444444",
+			OutsideOutline = "#000000",
+			Outline = "#888888"
+		}
+	},
+	MidnightPurple = { -- Theme by tjk
+		Text = "#FFFFFF",
+		ReadWriteText = "#ed02e9",
+		Background = "#361e35",
+		Button = {
+			Text = "#000000",
+			InvertedText = "#FFFFFF",
+			Outline = "#888888",
+			Top = "#a892a8",
+			Bottom = "#9c869b",
+			Pressed = {
+				Top = "#a803a6",
+				Bottom = "#9e009b"
+			}
+		},
+		Joystick = {
+			Circle = "#444444",
+			Background = "#222222",
+			MagBoundary = "#666666",
+			Crosshair = "#FFFFFF",
+			Stick = "#c2a43a",
+			Dot = "#ebe8eb",
+		},
+		InputField = {
+			EditingText = "#000000",
+			Editing = "#FFDD00",
+			Enabled = "#666666",
+			Disabled = "#444444",
 			OutsideOutline = "#000000",
 			Outline = "#888888"
 		}
@@ -184,7 +259,11 @@ Settings.Layout = {
 			'+',
 			'-',
 			'I',
-			'High Mag '
+			'High Mag ',
+			'Set RNG  ',
+			'V ',
+			'I',
+			'Record Ghost'
 		},
 		selectedItem = 1,
 
@@ -215,6 +294,10 @@ Settings.Layout = {
 		DECARCE = 25,
 		REVERSE_ARCTAN = 26,
 		HIGH_MAG = 27,
+		SET_RNG = 28,
+		USE_VALUE = 29,
+		USE_INDEX = 30,
+		RECORD_GHOST = 31,
 
 		dist_button = {
 			enabled = false,
@@ -242,10 +325,14 @@ Settings.Layout = {
 			arctanexp = 0,
 			highmag = false
 		},
+		set_rng_mode = {
+			value = false,
+			index = true,
+		},
 		swimming = false
 	},
 	TextArea = {
-		items = {'Match Angle', 'Magnitude'},
+		items = {'Match Angle', 'Magnitude', 'RNG'},
 		selectedItem = 0,
 		selectedChar = 1,
 		blinkTimer = 0,
@@ -253,6 +340,7 @@ Settings.Layout = {
 		showUnderscore = true,
 
 		MATCH_ANGLE = 1,
-		MAGNITUDE = 2
+		MAGNITUDE = 2,
+		RNG = 3
 	}
 }

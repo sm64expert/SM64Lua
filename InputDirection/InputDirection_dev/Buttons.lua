@@ -5,6 +5,8 @@ ButtonType = {
 	textArea = 1
 }
 
+recording_ghost = false
+
 local pow = math.pow
 
 local function getDigit(value, length, digit)
@@ -26,8 +28,8 @@ Buttons = {
 		type = ButtonType.button,
 		text = Settings.Layout.Button.items[Settings.Layout.Button.IGNORE_Y],
 		box = {
-			Drawing.Screen.Width + 130,
-			460,
+			Drawing.Screen.Width + 137,
+			565,
 			75,
 			20
 		},
@@ -423,8 +425,8 @@ Buttons = {
 		type = ButtonType.button,
 		text = Settings.Layout.Button.items[Settings.Layout.Button.DIST_MOVED],
 		box = {
-			Drawing.Screen.Width + 5,
-			460,
+			Drawing.Screen.Width + 12,
+			565,
 			120,
 			20
 		},
@@ -743,5 +745,183 @@ Buttons = {
 				Settings.Layout.Button.swimming = true
 			end
 		end
-	}
+	},
+	{
+		name = "set rng",
+		type = ButtonType.button,
+		text = Settings.Layout.Button.items[Settings.Layout.Button.SET_RNG],
+		box = {
+			Drawing.Screen.Width + 12,
+			494,
+			84,
+			30
+		},
+		enabled = function()
+			return true
+		end,
+		pressed = function()
+			return Settings.Layout.Button.SET_RNG == true
+		end,
+		onclick = function(self)
+			if (Settings.Layout.Button.SET_RNG == true) then
+				Settings.Layout.Button.SET_RNG = false
+			else
+				Settings.Layout.Button.SET_RNG = true
+			end
+		end
+	},
+	{
+		name = "use value",
+		type = ButtonType.button,
+		text = Settings.Layout.Button.items[Settings.Layout.Button.USE_VALUE],
+		box = {
+			Drawing.Screen.Width + 91,
+			494,
+			17,
+			30
+		},
+		enabled = function()
+			return true
+		end,
+		pressed = function()
+			return Settings.Layout.Button.set_rng_mode.value == true
+		end,
+		onclick = function(self)
+			if (Settings.Layout.Button.set_rng_mode.value == true) then
+				Settings.Layout.Button.set_rng_mode.value = false
+			else
+				Settings.Layout.Button.set_rng_mode.value = true
+				Settings.Layout.Button.set_rng_mode.index = false
+			end
+		end
+	},
+	{
+		name = "use index",
+		type = ButtonType.button,
+		text = Settings.Layout.Button.items[Settings.Layout.Button.USE_INDEX],
+		box = {
+			Drawing.Screen.Width + 108,
+			494,
+			17,
+			30
+		},
+		enabled = function()
+			return true
+		end,
+		pressed = function()
+			return Settings.Layout.Button.set_rng_mode.index == true
+		end,
+		onclick = function(self)
+			if (Settings.Layout.Button.set_rng_mode.index == true) then
+				Settings.Layout.Button.set_rng_mode.index = false
+			else
+				Settings.Layout.Button.set_rng_mode.index = true
+				Settings.Layout.Button.set_rng_mode.value = false
+			end
+		end
+	},
+	{
+		name = "set rng input",
+		type = ButtonType.textArea,
+		inputSize = 5,
+		box = {
+			Drawing.Screen.Width + 131,
+			494,
+			85,
+			30
+		},
+		value = function()
+			return Settings.setRNG
+		end,
+		enabled = function()
+			return Settings.Layout.Button.SET_RNG == true
+		end,
+		editing = function()
+			return Settings.Layout.TextArea.selectedItem == Settings.Layout.TextArea.RNG
+		end,
+		onclick = function(self, char)
+			if (Settings.Layout.TextArea.selectedItem ~= Settings.Layout.TextArea.RNG) then
+				Settings.Layout.TextArea.selectedItem = Settings.Layout.TextArea.RNG
+				Settings.Layout.TextArea.selectedChar = 1 -- on first click set to leading digit
+			else
+				Settings.Layout.TextArea.selectedChar = char
+			end
+			Settings.Layout.TextArea.blinkTimer = 0
+			Settings.Layout.TextArea.showUnderscore = true
+		end,
+		onkeypress = function(self, key)
+			local rng = Settings.setRNG or 0
+			local oldkey = math.floor(rng / math.pow(10, self.inputSize - Settings.Layout.TextArea.selectedChar)) % 10
+			rng = rng + (key - oldkey) * math.pow(10, self.inputSize - Settings.Layout.TextArea.selectedChar)
+			Settings.Layout.TextArea.selectedChar = Settings.Layout.TextArea.selectedChar + 1
+			if Settings.Layout.TextArea.selectedChar > self.inputSize then
+				Settings.Layout.TextArea.selectedItem = 0
+			end
+			Settings.setRNG = rng
+		end,
+		onarrowpress = function(self, key)
+			if (key == "left") then
+				Settings.Layout.TextArea.selectedChar = Settings.Layout.TextArea.selectedChar - 1
+				if (Settings.Layout.TextArea.selectedChar == 0) then
+					Settings.Layout.TextArea.selectedChar = self.inputSize
+				end
+				Settings.Layout.TextArea.showUnderscore = false
+			elseif (key == "right") then
+				Settings.Layout.TextArea.selectedChar = Settings.Layout.TextArea.selectedChar + 1
+				if (Settings.Layout.TextArea.selectedChar == self.inputSize + 1) then
+					Settings.Layout.TextArea.selectedChar = 1
+				end
+				Settings.Layout.TextArea.showUnderscore = false
+			elseif (key == "up") then
+				local oldkey = getDigit(Settings.setRNG, self.inputSize)
+				Settings.setRNG = updateDigit(Settings.setRNG, self.inputSize, oldkey + 1)
+				Settings.Layout.TextArea.showUnderscore = true
+			elseif (key == "down") then
+				local oldkey = getDigit(Settings.setRNG, self.inputSize)
+				Settings.setRNG = updateDigit(Settings.setRNG, self.inputSize, oldkey - 1)
+				Settings.Layout.TextArea.showUnderscore = true
+			end
+			Settings.Layout.TextArea.blinkTimer = -1
+		end
+	},
+	{
+		name = "record ghost",
+		type = ButtonType.button,
+		text = "",
+		box = {
+			Drawing.Screen.Width + 16,
+			465,
+			95,
+			20
+		},
+		enabled = function()
+			return true
+		end,
+		pressed = function()
+			return Settings.Layout.Button.RECORD_GHOST == true
+		end,
+		onclick = function(self)
+			i = 0
+			if (Settings.Layout.Button.RECORD_GHOST == true) then
+				Settings.Layout.Button.RECORD_GHOST = false
+				recording_ghost = false
+				if (i == 0) then
+					Ghost.write_file()
+					i = i + 1
+				end
+			else
+				Settings.Layout.Button.RECORD_GHOST = true
+				recording_ghost = true
+				i = 0
+			end
+		end
+	},
 }
+
+function Buttons.getGhostButtonText()
+	if recording_ghost then
+		return "End Recording"
+	else
+		return Settings.Layout.Button.items[31]
+	end
+end

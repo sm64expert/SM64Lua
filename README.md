@@ -2,7 +2,7 @@
 
 The all-in-one lua script that lets you precisely control your inputs - regardless of camera angles! Simply download these files and [mupen64-rr-lua](https://github.com/mkdasher/mupen64-rr-lua-/releases), then run `InputDirection_dev.lua` to get started.
 
-![MatchYawDemo](https://cdn.discordapp.com/attachments/196442189604192256/825890165691121704/MatchYawDemo.gif)
+![MatchYawDemo](https://cdn.discordapp.com/attachments/832779512738873444/1001993954096590919/new_new_new_input_direction_gif.gif)
 
 - Match Yaw
   - holds the joystick input that most closely corresponds to Mario's facing angle
@@ -35,11 +35,16 @@ The all-in-one lua script that lets you precisely control your inputs - regardle
 - Swim
   - repeatedly presses A or B to swim optimally
   - to change which button is pressed, replace the string inside the main script
+- Record Ghost
+  - starts/stops recording a ghost for use with [Frame's STROOP refactor](https://github.com/chaosBrick/STROOP) (`tmp.ghost` is saved in `InputDirection_dev` folder by
+    default)
 - Magnitude Control
   - set a maximum magnitude to input
   - `Speedkick` is a shortcut for a magnitude of 48
   - `High Mag` prioritizes magnitude over angle
   - `Reset Mag` removes the the cap
+- Set RNG
+  - `V` and `I` denote whether you're entering a value or index, respectively. To use, click the Set RNG button and enter your value/index into the text field. It is updated in the game on the current frame, but due to the fact that the Lua is only redrawn at every VI, you won't see your updated RNG in the displayed variables. Frame advancing, however, will show the next value/index in the RNG function, demonstrating that your RNG was indeed set on the previous frame.
 - Get Dist Moved
   - once enabled, saves Mario's position and displays the distance from that point
   - `Ignore Y` ignores the vertical distance
